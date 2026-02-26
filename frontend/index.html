@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<title>Your Gym | Powered by Gymsync Pro</title>
+<link rel="stylesheet" href="global.css">
+
+<style>
+html{scroll-behavior:smooth;}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+color:white;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+nav{
+position:fixed;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 60px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(15px);
+z-index:1000;
+}
+
+nav h2{
+background:linear-gradient(45deg,#22d3ee,#7c3aed);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+letter-spacing:2px;
+}
+
+nav a{
+color:white;
+margin-left:25px;
+text-decoration:none;
+font-weight:600;
+}
+
+nav a:hover{
+color:#22d3ee;
+}
+
+/* SECTION BASE */
+.section{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:100px 20px;
+}
+
+/* HERO */
+.hero{
+background:url("gymbg.png") center/cover no-repeat fixed;
+position:relative;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(to bottom,rgba(0,0,0,0.7),rgba(0,0,0,0.9));
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+}
+
+.hero h1{
+font-size:70px;
+background:linear-gradient(45deg,#22d3ee,#7c3aed);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.hero p{
+color:#cbd5e1;
+font-size:18px;
+margin:20px 0;
+}
+
+.btn{
+padding:15px 35px;
+border:none;
+border-radius:12px;
+background:linear-gradient(45deg,#7c3aed,#22d3ee);
+color:white;
+cursor:pointer;
+margin:10px;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 25px #22d3ee;
+}
+
+/* CARDS */
+.card{
+width:260px;
+padding:25px;
+background:rgba(15,23,42,0.8);
+border-radius:18px;
+backdrop-filter:blur(10px);
+box-shadow:0 0 20px #7c3aed;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 30px #22d3ee;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>Your Gym</h2>
+<div>
+<a href="#home">Home</a>
+<a href="#why">Features</a>
+<a href="#pricing">Plans</a>
+<a href="auth.html">Login</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="section hero">
+<div class="hero-content">
+<h1>Elevate Your Fitness Empire</h1>
+<p>Modern Gym Management Powered by GymSync</p>
+<button class="btn" onclick="window.location.href='auth.html'">Login to GymSync</button>
+</div>
+</section>
+
+<!-- WHY SECTION -->
+<section id="why" class="section">
+<h2>Why Choose GymSync</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:40px;justify-content:center;margin-top:40px;">
+
+<div class="card">
+<h3>💪 Smart Fitness Tracking</h3>
+<p>Track BMI, attendance and workout performance in real time.</p>
+</div>
+
+<div class="card">
+<h3>📅 Class Scheduling</h3>
+<p>Trainers schedule sessions and members view them instantly.</p>
+</div>
+
+<div class="card">
+<h3>📊 Powerful Dashboards</h3>
+<p>Separate panels for Admin, Trainer and Member roles.</p>
+</div>
+
+<div class="card">
+<h3>💳 Payment Management</h3>
+<p>Track membership plans, payments and expiry seamlessly.</p>
+</div>
+
+</div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section">
+<h2>Membership Plans</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:40px;justify-content:center;margin-top:40px;">
+
+<div class="card">
+<h3>Basic Plan</h3>
+<h2 style="color:#22d3ee;">₹2000 / month</h2>
+<p>✔ Gym Access</p>
+<p>✔ Attendance Tracking</p>
+<p>✔ Dashboard Access</p>
+</div>
+
+<div class="card">
+<h3>Standard Plan</h3>
+<h2 style="color:#22d3ee;">₹3500 / month</h2>
+<p>✔ Gym + Cardio</p>
+<p>✔ Progress Tracking</p>
+<p>✔ Diet Guidance</p>
+</div>
+
+<div class="card">
+<h3>Premium Plan</h3>
+<h2 style="color:#22d3ee;">₹5000 / month</h2>
+<p>✔ Personal Trainer</p>
+<p>✔ Advanced Analytics</p>
+<p>✔ Custom Workout Plan</p>
+</div>
+
+</div>
+</section>
+
+<!-- TRAINERS -->
+<section class="section">
+<h2>Our Expert Trainers</h2>
+
+<div style="display:flex;flex-wrap:wrap;gap:40px;justify-content:center;margin-top:40px;">
+
+<div class="card">
+<h3>Rohan Koli</h3>
+<p>Strength & Conditioning Coach</p>
+<p>8+ Years Experience</p>
+</div>
+
+<div class="card">
+<h3>Shreya Pawar</h3>
+<p>Certified Yoga Trainer</p>
+<p>6+ Years Experience</p>
+</div>
+
+<div class="card">
+<h3>Shreeram Kulat</h3>
+<p>Personal Fitness Coach</p>
+<p>6+ Years Experience</p>
+</div>
+
+</div>
+</section>
+
+</body>
+</html>
