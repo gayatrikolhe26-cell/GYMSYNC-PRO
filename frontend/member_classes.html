@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>My Classes</title>
+<link rel="stylesheet" href="global.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>MEMBER PANEL</h2>
+
+<a href="member_dashboard.html">Dashboard</a>
+<a href="member_progress.html">My Progress</a>
+<a href="member_classes.html">My Classes</a>
+<a href="member_profile.html">My Card</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="content">
+
+<h1>My Scheduled Classes</h1>
+
+<div id="classesBox" style="
+display:flex;
+flex-wrap:wrap;
+gap:20px;
+margin-top:20px;
+"></div>
+
+</div>
+
+<script>
+
+fetch("../backend/get_member_schedule.php")
+.then(res=>res.json())
+.then(data=>{
+
+let html="";
+
+if(data.length==0){
+html="<p>No classes scheduled</p>";
+}
+
+data.forEach(c=>{
+html+=`
+<div style="
+background:rgba(0,0,0,0.7);
+padding:20px;
+border-radius:15px;
+width:260px;
+box-shadow:0 0 20px cyan;
+">
+<h3>${c.workout}</h3>
+<p>📅 ${c.class_date}</p>
+<p>⏰ ${c.class_time}</p>
+<p>👨‍🏫 ${c.trainer}</p>
+</div>
+`;
+});
+
+document.getElementById("classesBox").innerHTML=html;
+
+});
+
+</script>
+
+</body>
+</html>

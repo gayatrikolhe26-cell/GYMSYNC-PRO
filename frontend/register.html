@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Member Registration - GymSync Pro</title>
+
+<link rel="stylesheet" href="global.css">
+
+<style>
+body{
+background:url('../assets/gymbg.png');
+background-size:cover;
+background-position:center;
+font-family:Arial;
+}
+
+.register-box{
+width:420px;
+padding:40px;
+margin:auto;
+margin-top:40px;
+background:rgba(2,6,23,0.85);
+border-radius:20px;
+backdrop-filter:blur(20px);
+box-shadow:0 0 40px rgba(124,58,237,0.9);
+}
+
+.register-box h2{
+text-align:center;
+color:#22d3ee;
+margin-bottom:20px;
+}
+
+input, select{
+width:100%;
+padding:13px;
+margin:8px 0;
+border:none;
+border-radius:10px;
+background:#020617;
+color:white;
+}
+
+input:focus, select:focus{
+outline:none;
+box-shadow:0 0 10px #22d3ee;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:linear-gradient(45deg,#7c3aed,#22d3ee);
+color:white;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px #22d3ee;
+}
+
+#msg{
+text-align:center;
+margin-top:10px;
+color:#22c55e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="register-box">
+<h2>Join GymSync Pro</h2>
+
+<input type="text" id="name" placeholder="Full Name" required>
+<input type="text" id="phone" placeholder="Phone" required>
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Create Password" required>
+<input type="number" id="age" placeholder="Age" required>
+
+<select id="gender" required>
+<option value="">Select Gender</option>
+<option>Male</option>
+<option>Female</option>
+</select>
+
+<input type="number" id="height" placeholder="Height (cm)" required>
+<input type="number" id="weight" placeholder="Weight (kg)" required>
+
+<button onclick="register()">Create Account</button>
+<p id="msg"></p>
+</div>
+
+<script>
+function register(){
+
+let formData = new FormData();
+formData.append("name", document.getElementById("name").value);
+formData.append("phone", document.getElementById("phone").value);
+formData.append("email", document.getElementById("email").value);
+formData.append("password", document.getElementById("password").value);
+formData.append("age", document.getElementById("age").value);
+formData.append("gender", document.getElementById("gender").value);
+formData.append("height", document.getElementById("height").value);
+formData.append("weight", document.getElementById("weight").value);
+
+fetch("../backend/register_member.php",{
+method:"POST",
+body:formData
+})
+.then(res=>res.text())
+.then(data=>{
+document.getElementById("msg").innerHTML=data;
+});
+}
+</script>
+
+</body>
+</html>

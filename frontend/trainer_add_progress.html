@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="global.css">
+</head>
+<body>
+
+<div class="sidebar">
+<h2>TRAINER PANEL</h2>
+<a href="trainer_dashboard.html">Dashboard</a>
+<a href="trainer_members.html">My Members</a>
+<a href="trainer_add_progress.html">Add Progress</a>
+<a href="trainer_view_progress.html">View Progress</a>
+<a href="trainer_schedule.html">Schedule Class</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="main">
+<h2>Add Progress</h2>
+
+<select id="memberSelect"></select>
+<br><br>
+
+<input type="number" id="weight" placeholder="Weight (kg)">
+<input type="number" id="height" placeholder="Height (cm)">
+<br><br>
+
+<button onclick="saveProgress()">Save</button>
+
+</div>
+
+<script>
+
+fetch("../backend/trainer_dashboard.php")
+.then(res=>res.json())
+.then(d=>{
+let options="";
+d.members.forEach(m=>{
+options+=`<option value="${m.id}">${m.name}</option>`;
+});
+document.getElementById("memberSelect").innerHTML=options;
+});
+
+function saveProgress(){
+
+let id=document.getElementById("memberSelect").value;
+let weight=document.getElementById("weight").value;
+let height=document.getElementById("height").value;
+
+let h=height/100;
+let bmi=(weight/(h*h)).toFixed(2);
+
+fetch("../backend/save_progress.php",{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+member_id:id,
+weight:weight,
+height:height,
+bmi:bmi
+})
+})
+.then(r=>r.json())
+.then(d=>{
+alert("Progress Saved");
+});
+}
+
+</script>
+
+</body>
+</html>

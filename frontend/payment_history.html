@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment History</title>
+<link rel="stylesheet" href="global.css">
+<style>
+body{color:white;}
+.container{margin-left:250px;padding:30px;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:10px;border-bottom:1px solid #333;text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>GYMSYNC PRO</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="members.html">Members</a>
+<a href="payment_history.html">Payments</a>
+<a href="auth.html">Logout</a>
+</div>
+
+<div class="container">
+<h2>All Payments</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Member ID</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Date</th>
+<th>Due Date</th>
+</tr>
+</thead>
+<tbody id="payTable"></tbody>
+</table>
+</div>
+
+<script>
+fetch("../backend/get_all_payments.php")
+.then(res=>res.json())
+.then(data=>{
+let rows="";
+data.forEach(p=>{
+rows+=`
+<tr>
+<td>${p.id}</td>
+<td>${p.member_id}</td>
+<td>${p.type}</td>
+<td>₹${p.amount}</td>
+<td>${p.payment_date}</td>
+<td>${p.due_date}</td>
+</tr>`;
+});
+payTable.innerHTML=rows;
+});
+</script>
+
+</body>
+</html>

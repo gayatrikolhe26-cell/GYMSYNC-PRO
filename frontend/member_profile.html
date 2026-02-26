@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<link rel="stylesheet" href="global.css">
+</head>
+<body>
+
+<div class="sidebar">
+<h2>MEMBER PANEL</h2>
+<a href="member_dashboard.html">Dashboard</a>
+<a href="member_progress.html">My Progress</a>
+<a href="member_classes.html">My Classes</a>
+<a href="member_profile.html">My Card</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="main">
+<h2>My Membership Card</h2>
+<div id="card"></div>
+</div>
+
+<script>
+fetch("../backend/member_dashboard.php")
+.then(res=>res.json())
+.then(m=>{
+
+let html=`
+<div style="
+width:350px;
+background:linear-gradient(145deg,#0f2027,#203a43,#2c5364);
+padding:30px;
+border-radius:20px;
+box-shadow:0 0 40px cyan;
+text-align:center;
+">
+
+<h2 style="color:cyan">${m.name}</h2>
+<p>📞 ${m.phone}</p>
+<p>📧 ${m.email}</p>
+
+<hr>
+
+<p>🏋 Trainer: ${m.trainer}</p>
+<p>⚖ BMI: ${m.bmi ?? "-"}</p>
+<p>📅 Joined: ${m.join_date}</p>
+<p>💳 Plan: ${m.plan}</p>
+
+<p style="
+margin-top:12px;
+padding:8px;
+background:${m.status=='Active'?'green':'red'};
+border-radius:10px;
+">
+${m.status}
+</p>
+
+</div>
+`;
+
+document.getElementById("card").innerHTML=html;
+});
+</script>
+
+</body>
+</html>

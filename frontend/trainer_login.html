@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Trainer Login</title>
+<link rel="stylesheet" href="global.css">
+<style>
+body{display:flex;justify-content:center;align-items:center;height:100vh;color:white;}
+.box{background:rgba(0,0,0,0.7);padding:30px;border-radius:15px;width:300px;text-align:center;}
+input{width:100%;padding:10px;margin:10px 0;border-radius:8px;border:none;}
+button{padding:10px;width:100%;background:#22d3ee;border:none;border-radius:8px;}
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Trainer Login</h2>
+<input id="email" placeholder="Email">
+<input id="pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="msg"></p>
+</div>
+
+<script>
+function login(){
+fetch("../backend/trainer_login.php",{
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:"email="+email.value+"&password="+pass.value
+})
+.then(res=>res.text())
+.then(data=>{
+if(data=="success"){
+window.location="trainer_dashboard.html";
+}else{
+msg.innerHTML="Invalid login";
+}
+});
+}
+</script>
+
+</body>
+</html>

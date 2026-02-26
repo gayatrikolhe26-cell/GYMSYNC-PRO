@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="global.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>TRAINER PANEL</h2>
+<a href="trainer_dashboard.html">Dashboard</a>
+<a href="trainer_members.html">My Members</a>
+<a href="trainer_add_progress.html">Add Progress</a>
+<a href="trainer_view_progress.html">View Progress</a>
+<a href="trainer_schedule.html">Schedule Class</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="main">
+<h2>My Assigned Members</h2>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>BMI</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="assignedTable"></tbody>
+</table>
+
+</div>
+
+<script>
+fetch("../backend/trainer_dashboard.php")
+.then(res=>res.json())
+.then(d=>{
+
+let rows="";
+
+d.members.forEach(m=>{
+rows+=`
+<tr>
+<td>${m.name}</td>
+<td>${m.phone}</td>
+<td>${m.bmi ?? "-"}</td>
+<td>${m.status}</td>
+</tr>
+`;
+});
+
+document.getElementById("assignedTable").innerHTML=rows;
+
+});
+</script>
+
+</body>
+</html>

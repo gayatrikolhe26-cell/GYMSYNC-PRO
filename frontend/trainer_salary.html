@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<title>Trainer Salary</title>
+<link rel="stylesheet" href="global.css">
+<style>
+body{color:white;}
+.container{margin-left:250px;padding:30px;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:12px;border-bottom:1px solid #333;text-align:center;}
+th{color:#22d3ee;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>GYMSYNC PRO</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="members.html">Members</a>
+<a href="trainers.html">Trainers</a>
+<a href="trainer_salary.html">Trainer Salary</a>
+<a href="payment_history.html">Payments</a>
+<a href="auth.html">Logout</a>
+</div>
+
+<div class="container">
+<h2>Trainer Salary Calculation</h2>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Fixed Salary</th>
+<th>PT Clients</th>
+<th>Commission</th>
+<th>Total Salary</th>
+</tr>
+</thead>
+<tbody id="salTable"></tbody>
+</table>
+
+</div>
+
+<script>
+fetch("../backend/get_trainer_salary.php")
+.then(res=>res.json())
+.then(data=>{
+let rows="";
+data.forEach(t=>{
+rows+=`
+<tr>
+<td>${t.name}</td>
+<td>₹${t.salary}</td>
+<td>${t.clients}</td>
+<td>₹${t.commission}</td>
+<td style="color:#22c55e;font-weight:bold;">₹${t.total_salary}</td>
+</tr>
+`;
+});
+salTable.innerHTML=rows;
+});
+</script>
+
+</body>
+</html>

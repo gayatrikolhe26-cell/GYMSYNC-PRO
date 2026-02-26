@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<title>Trainer Dashboard</title>
+<link rel="stylesheet" href="global.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>TRAINER CONTROL PANEL</h2>
+
+<a href="trainer_dashboard.html">Dashboard</a>
+<a href="trainer_members.html">My Members</a>
+<a href="trainer_add_progress.html">Add Progress</a>
+<a href="trainer_view_progress.html">View Progress</a>
+<a href="trainer_schedule.html">Schedule Class</a>
+
+<a href="../backend/logout.php">Logout</a>
+</div>
+<div class="main">
+<h1>Trainer Dashboard</h1>
+<h2 id="trainerName"></h2>
+
+<div class="cards">
+<div class="card">
+<h3>My Members</h3>
+<div id="trainerMembers"></div>
+</div>
+<div class="card">
+<h3>Total Members</h3>
+<p id="totalMembers">0</p>
+</div>
+
+<div class="card">
+<h3>Active Members</h3>
+<p id="activeMembers">0</p>
+</div>
+
+<div class="card">
+<h3>Today's Attendance</h3>
+<p id="todayAttendance">0</p>
+</div>
+
+</div>
+
+<div class="card">
+<h3>Assigned Members</h3>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>BMI</th>
+<th>Status</th>
+<th>Attendance</th>
+</tr>
+</thead>
+<tbody id="assignedTable"></tbody>
+<tbody id="membersTable"></tbody>
+</table>
+</div>
+
+</div>
+rows+=`
+<tr>
+<td>${m.id}</td>
+<td>${m.name}</td>
+<td>${m.phone}</td>
+<td>${m.specialty}</td>
+
+
+</td>
+`;
+<script>
+
+fetch("../backend/trainer_dashboard.php")
+.then(res=>res.json())
+.then(d=>{
+
+/* update cards */
+document.getElementById("totalMembers").innerText=d.total;
+document.getElementById("activeMembers").innerText=d.active;
+document.getElementById("todayAttendance").innerText=d.attendance;
+
+/* members list */
+let rows="";
+
+d.members.forEach(m=>{
+
+rows+=`
+<tr>
+<td>${m.name}</td>
+<td>${m.phone}</td>
+<td>${m.bmi ?? "-"}</td>
+<td>${m.status}</td>
+
+
+</tr>
+`;
+
+});
+
+document.getElementById("assignedTable").innerHTML=rows;
+
+});
+
+</script>
+<div id="graphBox" style="
+display:none;
+position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:#0b1320;
+padding:30px;
+border-radius:12px;
+box-shadow:0 0 40px rgba(0,255,255,0.3);
+z-index:999;
+">
+
+<h3 style="color:cyan">BMI Progress</h3>
+<canvas id="bmiChart" width="400" height="200"></canvas>
+
+<br>
+<button onclick="closeGraph()" 
+style="padding:8px 20px;background:cyan;border:none;border-radius:6px">
+Close
+</button>
+
+</div>
+<div id="progressModal" style="
+display:none;
+position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:#0b1320;
+padding:25px;
+border-radius:12px;
+box-shadow:0 0 30px cyan;
+z-index:999;
+">
+
+<h3 style="color:cyan">Add Progress</h3>
+
+<input type="hidden" id="memberId">
+
+<input type="number" id="weight" placeholder="Weight (kg)" style="margin:5px"><br>
+<input type="number" id="height" placeholder="Height (cm)" style="margin:5px"><br>
+
+<button onclick="saveProgress()" style="margin-top:10px">Save</button>
+<button onclick="closeModal()">Cancel</button>
+
+</div>
+<script>
+function openProgressModal(id){
+document.getElementById("memberId").value=id;
+document.getElementById("progressModal").style.display="block";
+}
+
+function closeModal(){
+document.getElementById("progressModal").style.display="none";
+}
+
+function saveProgress(){
+
+let id=document.getElementById("memberId").value;
+let weight=document.getElementById("weight").value;
+let height=document.getElementById("height").value;
+
+let h=height/100;
+let bmi=(weight/(h*h)).toFixed(2);
+
+fetch("../backend/save_progress.php",{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+member_id:id,
+weight:weight,
+height:height,
+bmi:bmi
+})
+})
+.then(r=>r.json())
+.then(d=>{
+alert(d.message);
+closeModal();
+location.reload();
+});
+}
+</script>
+<script>
+
+let chart;
+
+function viewProgress(memberId){
+
+fetch("../backend/get_progress.php?member_id="+memberId)
+.then(res=>res.json())
+.then(data=>{
+
+if(data.length==0){
+alert("No progress data yet");
+return;
+}
+
+document.getElementById("graphBox").style.display="block";
+
+let labels=data.map(d=>d.date);
+let bmi=data.map(d=>d.bmi);
+
+const ctx=document.getElementById("bmiChart").getContext("2d");
+
+if(chart) chart.destroy();
+
+chart=new Chart(ctx,{
+type:"line",
+data:{
+labels:labels,
+datasets:[{
+label:"BMI Progress",
+data:bmi,
+borderColor:"cyan",
+fill:false,
+tension:0.3
+}]
+}
+});
+
+});
+}
+
+function closeGraph(){
+document.getElementById("graphBox").style.display="none";
+}
+
+</script>
+</body>
+</html>

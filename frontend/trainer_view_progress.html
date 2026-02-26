@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="global.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>TRAINER PANEL</h2>
+<a href="trainer_dashboard.html">Dashboard</a>
+<a href="trainer_members.html">My Members</a>
+<a href="trainer_add_progress.html">Add Progress</a>
+<a href="trainer_view_progress.html">View Progress</a>
+<a href="trainer_schedule.html">Schedule Class</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="main">
+<h2>View Progress</h2>
+
+<select id="memberSelect"></select>
+<button onclick="loadProgress()">Show</button>
+
+<div style="
+background:rgba(0,0,0,0.65);
+padding:25px;
+border-radius:15px;
+width:700px;
+margin-top:20px;
+box-shadow:0 0 25px cyan;
+">
+<canvas id="bmiChart" height="120"></canvas>
+</div>
+
+</div>
+
+<script>
+
+let chart;
+
+fetch("../backend/trainer_dashboard.php")
+.then(res=>res.json())
+.then(d=>{
+let options="";
+d.members.forEach(m=>{
+options+=`<option value="${m.id}">${m.name}</option>`;
+});
+document.getElementById("memberSelect").innerHTML=options;
+});
+
+function loadProgress(){
+
+let id=document.getElementById("memberSelect").value;
+
+fetch("../backend/get_progress.php?member_id="+id)
+.then(res=>res.json())
+.then(data=>{
+
+if(data.length==0){
+alert("No data");
+return;
+}
+
+let labels=data.map(d=>d.date);
+let bmi=data.map(d=>d.bmi);
+
+const ctx=document.getElementById("bmiChart").getContext("2d");
+
+if(chart) chart.destroy();
+
+chart=new Chart(ctx,{
+type:"line",
+data:{
+labels:labels,
+datasets:[{
+label:"BMI Progress",
+data:bmi,
+borderColor:"#00ffff",
+backgroundColor:"rgba(0,255,255,0.15)",
+borderWidth:3,
+pointBackgroundColor:"#00ffff",
+pointRadius:5,
+tension:0.4,
+fill:true
+}]
+}
+});
+
+});
+}
+
+</script>
+
+</body>
+</html>

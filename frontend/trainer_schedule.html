@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="global.css">
+</head>
+<body>
+
+<div class="sidebar">
+<h2>TRAINER PANEL</h2>
+<a href="trainer_dashboard.html">Dashboard</a>
+<a href="trainer_members.html">My Members</a>
+<a href="trainer_add_progress.html">Add Progress</a>
+<a href="trainer_view_progress.html">View Progress</a>
+<a href="trainer_schedule.html">Schedule Class</a>
+<a href="../backend/logout.php">Logout</a>
+</div>
+
+<div class="main">
+<h2>Schedule Class</h2>
+
+<select id="member"></select><br><br>
+<input type="date" id="date"><br><br>
+<input type="time" id="time"><br><br>
+<input type="text" id="workout" placeholder="Workout Type"><br><br>
+
+<button onclick="save()">Schedule</button>
+
+<h3>Upcoming Classes</h3>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Date</th>
+<th>Time</th>
+<th>Workout</th>
+</tr>
+</thead>
+<tbody id="list"></tbody>
+</table>
+
+</div>
+
+<script>
+
+fetch("../backend/trainer_dashboard.php")
+.then(res=>res.json())
+.then(d=>{
+let opt="";
+d.members.forEach(m=>{
+opt+=`<option value="${m.id}">${m.name}</option>`;
+});
+document.getElementById("member").innerHTML=opt;
+});
+
+function save(){
+
+let member=document.getElementById("member").value;
+let date=document.getElementById("date").value;
+let time=document.getElementById("time").value;
+let workout=document.getElementById("workout").value;
+
+fetch("../backend/save_schedule.php",{
+method:"POST",
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+member_id:member,
+date:date,
+time:time,
+workout:workout
+})
+})
+.then(r=>r.json())
+.then(d=>{
+alert("Class Scheduled");
+load();
+});
+}
+
+function load(){
+
+fetch("../backend/get_schedule.php")
+.then(r=>r.json())
+.then(data=>{
+
+let rows="";
+data.forEach(s=>{
+rows+=`
+<tr>
+<td>${s.name}</td>
+<td>${s.class_date}</td>
+<td>${s.class_time}</td>
+<td>${s.workout}</td>
+</tr>
+`;
+});
+
+document.getElementById("list").innerHTML=rows;
+
+});
+}
+
+load();
+
+</script>
+
+</body>
+</html>

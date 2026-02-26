@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<title>Reports - GymSync</title>
+<link rel="stylesheet" href="global.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>GYMSYNC PRO</h2>
+<a href="dashboard.html">Dashboard</a>
+<a href="members.html">Members</a>
+<a href="trainers.html">Trainers</a>
+<a href="attendance.html">Attendance</a>
+<a href="payments.html">Payments</a>
+<a href="reports.html">Reports</a>
+<a href="auth.html">Logout</a>
+</div>
+
+<div class="main">
+<h1 class="title">Reports & Analytics</h1>
+
+<div class="cards">
+
+<div class="card"><h2 id="totalRevenue">₹0</h2><p>Total Revenue</p></div>
+<div class="card"><h2 id="todayRevenue">₹0</h2><p>Today Revenue</p></div>
+<div class="card"><h2 id="monthRevenue">₹0</h2><p>This Month</p></div>
+<div class="card"><h2 id="totalMembers">0</h2><p>Total Members</p></div>
+<div class="card"><h2 id="activeMembers">0</h2><p>Active Members</p></div>
+<div class="card"><h2 id="expiredMembers">0</h2><p>Expired Members</p></div>
+<div class="card"><h2 id="totalTrainers">0</h2><p>Total Trainers</p></div>
+
+</div>
+
+</div>
+
+<script>
+fetch("http://localhost/gymsync_pro/backend/get_reports.php")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("totalRevenue").innerText="₹ "+data.totalRevenue;
+document.getElementById("todayRevenue").innerText="₹ "+data.todayRevenue;
+document.getElementById("monthRevenue").innerText="₹ "+data.monthRevenue;
+
+document.getElementById("totalMembers").innerText=data.totalMembers;
+document.getElementById("activeMembers").innerText=data.activeMembers;
+document.getElementById("expiredMembers").innerText=data.expiredMembers;
+document.getElementById("totalTrainers").innerText=data.totalTrainers;
+
+});
+</script>
+
+</body>
+</html>
